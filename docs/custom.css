@@ -1,0 +1,13 @@
+li.toctree-l2:first-child {
+    display: none;
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+pre{
+    display:none
+}
