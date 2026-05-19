@@ -1635,14 +1635,17 @@ function init (map_data, model_data, embedded_css, selection, options) {
     reaction_compare_style: 'log2_fold',
 
     // Elisa
-
+    // Put reactions according to the standards for the figure
 
     reaction_scale: [
-
-      { type: 'value', value: 0, color: '#000000', size: 12 },
-      { type: 'value', value: 1, color: '#0096ff', size: 20 },
-      { type: 'value', value: 2, color: '#ff2600', size: 20 },
-      { type: 'value', value: 4, color: '#fefb00', size: 20 }
+      // No change
+      { type: 'value', value: 0, color: '#5e5e5e', size: 12 },
+      // Deactivated or lower expression
+      { type: 'value', value: 1, color: '#46949F', size: 20 },
+      // Activated or overexpressed
+      { type: 'value', value: 2, color: '#E13E4E', size: 20 },
+      // Changed direction
+      { type: 'value', value: 4, color: '#D4B66A', size: 20 }
     ],
 
     /*reaction_scale: [ { type: 'min', color: '#c8c8c8', size: 12 },
@@ -1708,7 +1711,7 @@ function init (map_data, model_data, embedded_css, selection, options) {
   this.settings = new Settings(set_option, get_option, conditional)
 
   // Check the scales have max and min
-  //Elisa
+  //Elisa - remove the min max value for the reaction scale
   //var scales = [ 'reaction_scale', 'metabolite_scale' ]
   var scales = [ 'metabolite_scale' ]
   scales.forEach(function (name) {
@@ -4514,7 +4517,14 @@ function update_node (update_selection, scale, has_data_on_nodes,
   var label_mousedown_fn = this.behavior.label_mousedown
   var label_mouseover_fn = this.behavior.label_mouseover
   var label_mouseout_fn = this.behavior.label_mouseout
+  // Elisa - Special colours to specific metabolites
 
+  var highlighted_metabolites = new Set([
+    'glc__D_e',
+    'mnl_e',
+    'xyl__D_e'
+  ])  
+  // finish elisa 
   var mg = update_selection
       .select('.node-circle')
     .attr('transform', function(d) {
@@ -4531,14 +4541,40 @@ function update_node (update_selection, scale, has_data_on_nodes,
           var f = d.data
           return f === null ? no_data_style['size'] : scale.metabolite_size(f)
         } else {
-          return d.node_is_primary ? primary_r : secondary_r
+          // Elisa change node size 
+          // return d.node_is_primary ? primary_r : secondary_r
+          r = d.node_is_primary ? primary_r : secondary_r
         }
+        // Elisa modification:
+        // extracellular primary metabolites get +5 radius
+
+        if (d.node_is_primary && d.bigg_id && d.bigg_id.endsWith('_e')) {
+          r += 7.5
+        }
+        return r
       }
       // midmarkers and multimarkers
       return marker_r
     })
+
+    // Elisa add the colours
     .style('fill', function(d) {
       if (d.node_type === 'metabolite') {
+
+        // Elisa custom highlighted metabolites
+        // 1. Elisa custom metabolites override _e rule
+
+        if (highlighted_metabolites.has(d.bigg_id)) {
+          return '#359920'
+        }
+        // 2. Default special rule:
+        // all extracellular metabolites (_e)
+
+        if (d.bigg_id && d.bigg_id.endsWith('_e')) {
+          return '#8254A5'
+        }
+
+        //
         var should_color_data = (has_data_on_nodes &&
                                  metabolite_data_styles.indexOf('color') !== -1)
         if (should_color_data) {
@@ -4549,6 +4585,27 @@ function update_node (update_selection, scale, has_data_on_nodes,
         }
       }
       // midmarkers and multimarkers
+      return null
+    })
+
+    .style('stroke', function(d) {
+      if (
+        d.node_type === 'metabolite' &&
+        highlighted_metabolites.has(d.bigg_id)
+      ) {
+        return '#1e790b'
+      }
+      if (
+        d.node_type === 'metabolite' &&
+        d.bigg_id &&
+        d.bigg_id.endsWith('_e')
+      ) {
+        return '#3E0F62'
+      }
+
+
+
+      // keep default CSS stroke
       return null
     })
     .call(this.behavior.turn_off_drag)
