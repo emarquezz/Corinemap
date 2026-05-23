@@ -1640,12 +1640,16 @@ function init (map_data, model_data, embedded_css, selection, options) {
     reaction_scale: [
       // No change
       { type: 'value', value: 0, color: '#5e5e5e', size: 12 },
-      // Deactivated or lower expression
-      { type: 'value', value: 1, color: '#46949F', size: 20 },
-      // Activated or overexpressed
-      { type: 'value', value: 2, color: '#E13E4E', size: 20 },
+      // Lower expression
+      { type: 'value', value: 1, color: '#6785d0', size: 20 },
+      // Overexpressed
+      { type: 'value', value: 2, color: '#b75fb3', size: 20 },
+      // Deactivated 
+      { type: 'value', value: 4, color: '#cb5658', size: 20 },
+      // Activated 
+      { type: 'value', value: 5, color: '#64a85c', size: 20 },
       // Changed direction
-      { type: 'value', value: 4, color: '#D4B66A', size: 20 }
+      { type: 'value', value: 3, color: '#b88f3e', size: 20 }
     ],
 
     /*reaction_scale: [ { type: 'min', color: '#c8c8c8', size: 12 },
