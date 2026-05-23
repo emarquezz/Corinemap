@@ -11417,7 +11417,95 @@ d3.json('Corinebacterium_Glutamicum.json', function(e, data) { //access data in 
 
    // make a Builder
    var builder = escher.Builder(data, null, null, d3.select('#map_container'), options); //AK: Heavy lifting line which calls upon escher.Builder to generate the escher UI with custom options specified by the var options
+   // Elisa changes legend
+    // Define reaction scale with labels
+    var myReactionScale = [
+      { value: 0, color: '#5e5e5e', label: 'No change' },
+      { value: 1, color: '#6785d0', label: 'Lower expression' },
+      { value: 2, color: '#D26EA9', label: 'Overexpressed' },
+      { value: 4, color: '#cb5658', label: 'Deactivated' },
+      { value: 5, color: '#64a85c', label: 'Activated' },
+      { value: 3, color: '#b88f3e', label: 'Changed direction' }
+    ];
 
+    function addSvgLegend(map, scale) {
+      var svg = map.sel;
+      
+      var legendGroup = svg.append('g')
+        .attr('id', 'reaction-legend')
+        .attr('class', 'legend-svg')
+        .attr('transform', 'translate(4500, 1000)'); // adjust position as needed
+      
+      var fontSize = 82;
+      var swatchWidth = fontSize * 1.4;   // ≈115px
+      var swatchHeight = fontSize * 0.7;  // ≈57px
+      var spacing = fontSize * 1.3;       // vertical gap between rows
+      var titleTopPadding = fontSize * 0.9;  // extra space above title
+      var titleHeight = fontSize * 0.9;      // approximate height of title text
+      var boxPadding = fontSize * 0.3;       // padding on left/right/bottom (reduced)
+      
+      // First pass: find maximum text width
+      var maxTextWidth = 0;
+      scale.forEach(function(item) {
+        // More accurate estimate: 0.55 * fontSize per character
+        var textWidth = item.label.length * fontSize * 0.55;
+        maxTextWidth = Math.max(maxTextWidth, textWidth);
+      });
+      
+      // Total width = left padding + swatch + gap + text + right padding
+      var totalWidth = boxPadding + swatchWidth + 25 + maxTextWidth + boxPadding;
+      // Total height = top padding + title + spacing between title and first row + rows + bottom padding
+      var totalHeight = titleTopPadding + titleHeight + spacing + (scale.length - 1) * spacing + boxPadding;
+      
+      // Draw background rectangle
+      legendGroup.insert('rect', ':first-child')
+        .attr('width', totalWidth)
+        .attr('height', totalHeight)
+        .attr('fill', 'white')
+        .attr('stroke', '#333')
+        .attr('stroke-width', 4)
+        .attr('rx', 15);
+      
+      // Title text
+      legendGroup.append('text')
+        .attr('x', totalWidth / 2)
+        .attr('y', titleTopPadding + fontSize * 0.5) // vertically centered in the top area
+        .attr('text-anchor', 'middle')
+        .style('font-size', (fontSize + 8) + 'px')
+        .style('font-family', 'sans-serif')
+        .style('font-weight', 'bold')
+        .style('fill', 'black')
+        .text('Fluxes');
+      
+      // Rows (shifted down by titleTopPadding + titleHeight + a small gap)
+      var startY = titleTopPadding + titleHeight + 20; // extra 20px gap after title
+      scale.forEach(function(item, i) {
+        var row = legendGroup.append('g')
+          .attr('transform', 'translate(' + boxPadding + ', ' + (startY + i * spacing) + ')');
+        
+        row.append('rect')
+          .attr('width', swatchWidth)
+          .attr('height', swatchHeight)
+          .attr('fill', item.color)
+          .attr('stroke', '#333')
+          .attr('stroke-width', 2)
+          .attr('rx', 8);
+        
+        row.append('text')
+          .attr('x', swatchWidth + 25)
+          .attr('y', swatchHeight / 2)
+          .attr('dy', '0.35em')
+          .style('font-size', fontSize + 'px')
+          .style('font-family', 'sans-serif')
+          .style('font-weight', 'bold')
+          .style('fill', 'black')
+          .text(item.label);
+      });
+    }
+
+    // Call after builder is ready
+    addSvgLegend(builder.map, myReactionScale);
+   // Finish Elisa changes legend 
     d3.select("#enter_data").on("click", function() {
         document.getElementById('PopUp_Upload_Data').style.display = "block";
     });       

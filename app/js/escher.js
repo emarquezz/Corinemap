@@ -1644,8 +1644,8 @@ function init (map_data, model_data, embedded_css, selection, options) {
       { type: 'value', value: 1, color: '#6785d0', size: 20 },
       // Overexpressed #b75fb3 BA488B
       { type: 'value', value: 2, color: '#D26EA9', size: 20 },
-      // Deactivated 
-      { type: 'value', value: 4, color: '#cb5658', size: 20 },
+      // Deactivated  ##E13E4E #cb5658
+      { type: 'value', value: 4, color: '#E13E4E', size: 20 },
       // Activated 
       { type: 'value', value: 5, color: '#64a85c', size: 20 },
       // Changed direction
