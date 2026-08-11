@@ -1641,9 +1641,9 @@ function init (map_data, model_data, embedded_css, selection, options) {
       // No change
       { type: 'value', value: 0, color: '#5e5e5e', size: 12 },
       // Lower expression # 6785d0
-      { type: 'value', value: 1, color: '#D26EA9', size: 20 },
+      { type: 'value', value: 1, color: '#6785d0', size: 20 },
       // Overexpressed #b75fb3 BA488B // D26EA9
-      { type: 'value', value: 2, color: '#6785d0', size: 20 },
+      { type: 'value', value: 2, color: '#D26EA9', size: 20 },
       // Deactivated  ##E13E4E #cb5658
       { type: 'value', value: 4, color: '#E13E4E', size: 20 },
       // Activated 
