@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Corinemap</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/builder.css">
+    <link rel="stylesheet" href="css/corinemap-app.css">
+  </head>
+  <body>
+    <main id="map_container" aria-label="Corynebacterium glutamicum metabolic map"></main>
+
+    <aside id="corinemap-panel" class="corinemap-panel" aria-label="Corinemap controls">
+      <div class="corinemap-panel-header">
+        <h1>Corinemap</h1>
+        <button
+          id="toggle-corinemap-panel"
+          class="corinemap-panel-toggle"
+          type="button"
+          aria-controls="corinemap-panel-content"
+          aria-expanded="true"
+        >Hide</button>
+      </div>
+
+      <div id="corinemap-panel-content">
+        <p>Edit the map with Escher’s menus. Use these controls for categorical reaction data and complete workspaces.</p>
+
+        <section class="flux-datasets" aria-labelledby="flux-datasets-title">
+          <div class="flux-datasets-heading">
+            <h2 id="flux-datasets-title">Flux dataset</h2>
+            <span id="active-dataset-summary"></span>
+          </div>
+          <div id="flux-tabs" class="flux-tabs" role="tablist" aria-label="Flux datasets"></div>
+          <div class="flux-dataset-tools">
+            <button id="rename-active-dataset" class="corinemap-button compact" type="button">Rename tab</button>
+            <button id="remove-active-dataset" class="corinemap-button compact" type="button">Remove tab</button>
+          </div>
+        </section>
+
+        <div class="corinemap-actions">
+          <button id="open-category-editor" class="corinemap-button primary" type="button">Categories &amp; legend</button>
+          <button id="open-appearance-editor" class="corinemap-button" type="button">Advanced appearance</button>
+          <label class="corinemap-file-button">
+            Import flux CSV(s)
+            <input id="reaction-csv-input" type="file" accept=".csv,text/csv" multiple>
+          </label>
+          <button id="save-workspace" class="corinemap-button" type="button">Save workspace</button>
+          <label class="corinemap-file-button">
+            Open JSON/workspace
+            <input id="workspace-input" type="file" accept=".json,application/json">
+          </label>
+          <button id="clear-reaction-data" class="corinemap-button" type="button">Clear active dataset</button>
+        </div>
+        <div id="corinemap-status" role="status" aria-live="polite">Loading Corinemap…</div>
+      </div>
+    </aside>
+
+    <dialog id="category-dialog" class="corinemap-dialog">
+      <form id="category-form">
+        <h2>Reaction categories</h2>
+        <p>Category values are the numeric values used in your CSV. Labels, colors, line sizes, and legend visibility can be changed at any time.</p>
+
+        <label class="legend-title-field">
+          Legend title
+          <input id="legend-title" type="text" required>
+        </label>
+
+        <div class="category-table-wrapper">
+          <table class="category-table">
+            <thead>
+              <tr>
+                <th>Value</th>
+                <th>Label</th>
+                <th>Color</th>
+                <th>Line size</th>
+                <th>Legend</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="category-table-body"></tbody>
+          </table>
+        </div>
+
+        <button id="add-category" class="corinemap-button" type="button">Add category</button>
+
+        <section class="manual-assignment" aria-labelledby="manual-assignment-title">
+          <h3 id="manual-assignment-title" class="sr-only">Assign one reaction</h3>
+          <label>
+            Reaction ID
+            <input id="manual-reaction-id" type="text" list="reaction-id-list" placeholder="For example, PGK">
+            <datalist id="reaction-id-list"></datalist>
+          </label>
+          <label>
+            Category
+            <select id="manual-category"></select>
+          </label>
+          <button id="assign-reaction" class="corinemap-button" type="button">Assign reaction</button>
+        </section>
+
+        <div class="dialog-actions">
+          <button id="cancel-category-editor" class="corinemap-button" type="button">Cancel</button>
+          <button class="corinemap-button primary" type="submit">Apply categories</button>
+        </div>
+      </form>
+    </dialog>
+
+    <aside
+      id="appearance-panel"
+      class="appearance-panel"
+      role="dialog"
+      aria-modal="false"
+      aria-labelledby="appearance-title"
+      aria-hidden="true"
+      hidden
+    >
+      <form id="appearance-form" novalidate>
+        <header class="appearance-panel-header">
+          <div>
+            <span class="appearance-live-badge">Live preview</span>
+            <h2 id="appearance-title">Advanced appearance</h2>
+          </div>
+          <button
+            id="close-appearance-editor"
+            class="appearance-close-button"
+            type="button"
+            aria-label="Cancel appearance changes and close"
+            title="Cancel and close"
+          >&times;</button>
+        </header>
+
+        <div class="appearance-panel-scroll">
+          <p class="appearance-intro">Changes appear on the map immediately. <strong>Apply</strong> keeps them; <strong>Cancel</strong> restores the previous appearance.</p>
+          <p class="appearance-detail">Highlighted metabolites are the green glucose, mannitol, and xylose nodes. Extracellular metabolites use IDs ending in <code>_e</code>. Secondary nodes keep the secondary size even when they are green or purple.</p>
+
+          <div class="appearance-grid">
+          <section class="appearance-section" aria-labelledby="appearance-fonts-title">
+            <h3 id="appearance-fonts-title">Label font sizes</h3>
+            <label>Reaction labels <input id="appearance-reaction-label-size" type="number" min="1" step="1" inputmode="numeric" autocomplete="off" required></label>
+            <label>Normal primary metabolites <input id="appearance-primary-label-size" type="number" min="1" step="1" inputmode="numeric" autocomplete="off" required></label>
+            <label>Secondary metabolites (all colors) <input id="appearance-secondary-label-size" type="number" min="1" step="1" inputmode="numeric" autocomplete="off" required></label>
+            <label>Green highlighted primary metabolites <input id="appearance-highlighted-label-size" type="number" min="1" step="1" inputmode="numeric" autocomplete="off" required></label>
+            <label>Purple extracellular primary metabolites <input id="appearance-extracellular-label-size" type="number" min="1" step="1" inputmode="numeric" autocomplete="off" required></label>
+          </section>
+
+          <section class="appearance-section" aria-labelledby="appearance-nodes-title">
+            <h3 id="appearance-nodes-title">Metabolite circle radii</h3>
+            <label>Normal primary metabolites <input id="appearance-primary-radius" type="number" min="1" step="0.5" inputmode="decimal" autocomplete="off" required></label>
+            <label>Secondary metabolites (all colors) <input id="appearance-secondary-radius" type="number" min="1" step="0.5" inputmode="decimal" autocomplete="off" required></label>
+            <label>Green highlighted primary metabolites <input id="appearance-highlighted-radius" type="number" min="1" step="0.5" inputmode="decimal" autocomplete="off" required></label>
+            <label>Purple extracellular primary metabolites <input id="appearance-extracellular-radius" type="number" min="1" step="0.5" inputmode="decimal" autocomplete="off" required></label>
+          </section>
+
+          <section class="appearance-section appearance-colors" aria-labelledby="appearance-colors-title">
+            <h3 id="appearance-colors-title">Metabolite colors</h3>
+            <div class="appearance-color-group">
+              <strong>Normal</strong>
+              <label>Fill <input id="appearance-normal-fill" type="color" required></label>
+              <label>Outline <input id="appearance-normal-stroke" type="color" required></label>
+            </div>
+            <div class="appearance-color-group">
+              <strong>Green highlighted</strong>
+              <label>Fill <input id="appearance-highlighted-fill" type="color" required></label>
+              <label>Outline <input id="appearance-highlighted-stroke" type="color" required></label>
+            </div>
+            <div class="appearance-color-group">
+              <strong>Purple extracellular</strong>
+              <label>Fill <input id="appearance-extracellular-fill" type="color" required></label>
+              <label>Outline <input id="appearance-extracellular-stroke" type="color" required></label>
+            </div>
+          </section>
+          </div>
+        </div>
+
+        <p id="appearance-validation" class="appearance-validation" role="alert" hidden></p>
+        <div class="appearance-panel-actions">
+          <button id="reset-appearance" class="corinemap-button" type="button">Reset defaults</button>
+          <button id="cancel-appearance-editor" class="corinemap-button" type="button">Cancel</button>
+          <button class="corinemap-button primary" type="submit">Apply</button>
+        </div>
+      </form>
+    </aside>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/d3.v4.min.js"></script>
+    <script src="js/escher.js"></script>
+    <script type="module" src="js/corinemap/main.js"></script>
+  </body>
+</html>
