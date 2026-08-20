@@ -24,29 +24,8 @@ THE SOFTWARE.
 <!DOCTYPE html>
 <html>
     <title>Escher-Trace</title>
-  <!-- Bootstrap dependencies for the menu and buttons -->
-
-    
- 
-    <!-- JS -->  
-
-    <script src="js/jquery.min.js"></script> <!-- jquery --> 
-    <script src="js/bootstrap.min.js"></script> <!-- escher --> 
-    <script src="js/math.min.js"></script><!-- Math --> 
-    <script src="js/jquery.dataTables.min.js"></script><!-- DataTables -->     
-    <script src="js/d3.v4.min.js"></script><!-- d3 -->     
-    <script src="js/escher.js" charset="utf-8"></script><!-- escher --> 
-    <script src="js/d3.contextMenu7.js"></script><!-- context menu --> 
-    <script src="js/FileSaver_ed1.js"></script> <!-- FileSaver --> 
-    <script src="js/saveSvgAsPng.js"></script> <!-- saveSVGAsPng -->
-    <script src="js/jscolor.js"></script> <!-- Color Picker --> 
-    <script type="text/javascript" src="js/datatables.min.js"></script> <!-- DataTables --> 
-    <script src="js/Sortable.js"></script> <!-- sortable -->         
-    <script src="js/jquery-sortable.js"></script> <!-- sortable --> 
-
     <!-- CSS -->      
-    <script src="css/jquery.dataTables.min.css"></script><!-- DataTables --> 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/><!--  escher -->     
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/><!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" type="text/css" href="css/mycss.css"/><!-- DataTables -->
     <link rel="stylesheet" href="css/builder.css"/><!--  escher --> 
     <link rel="stylesheet" href="css/d3.contextMenu3.css" /><!-- context menu --> 
@@ -56,16 +35,6 @@ THE SOFTWARE.
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><!-- used for context menu and menu arrows  -->        
     <!--<link rel="stylesheet" href="css/font-awesome.min.css"/> -->       
     <!--<link rel="stylesheet" href="css/bootstrap.min.css"/><!--  escher --> 
-    
-<!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-150525889-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-150525889-1');
-    </script>      
     
     <style>
 
@@ -1723,7 +1692,19 @@ THE SOFTWARE.
 </body>
 
 <!-- JAVA SCRIPT BELOW  --> 
-      
+  <script src="js/jquery.min.js"></script><!-- jQuery -->
+  <script src="js/bootstrap.min.js"></script><!-- Bootstrap -->
+  <script src="js/math.min.js"></script><!-- Math.js -->
+  <script src="js/d3.v4.min.js"></script><!-- D3 -->
+  <script src="js/escher.js" charset="utf-8"></script><!-- Escher -->
+  <script src="js/d3.contextMenu7.js"></script><!-- Context menu -->
+  <script src="js/FileSaver_ed1.js"></script><!-- FileSaver -->
+  <script src="js/saveSvgAsPng.js"></script><!-- SVG/PNG export -->
+  <script src="js/jscolor.js"></script><!-- Color picker -->
+  <script src="js/datatables.min.js"></script><!-- DataTables bundle -->
+  <script src="js/Sortable.js"></script><!-- SortableJS -->
+  <script src="js/jquery-sortable.js"></script><!-- SortableJS jQuery adapter -->
+
   <script>
       
       //JACK MENU JS
@@ -2353,7 +2334,7 @@ function add_structures(result) {
 
         })
 
-        $('#close_file_organize_display').click( function() {
+        $('#close_file_organize_display').off('click.corinemap').on('click.corinemap', function() {
             //sortable('.sortable', 'disable'); //AKSortTest            
             div_hide('PopUp_file_display_List')            
         });
@@ -2676,7 +2657,7 @@ function add_structures(result) {
         allow_keystrokes("UserInputTimeUnits")          
 
     }
-        $('#submit_TimePoint_Table_button').click( function() {
+        $('#submit_TimePoint_Table_button').off('click.corinemap').on('click.corinemap', function() {
             data_time = table_time.$('input, select').serialize();
             //table_time.clear()
             div_hide('PopUp_TimePoint_Table') //closes popup upon click of submit_TimePoint_Table_button
@@ -2703,7 +2684,7 @@ function add_structures(result) {
             return false;
         } );
         
-        $('#close_popup').click( function() {
+        $('#close_popup').off('click.corinemap').on('click.corinemap', function() {
             div_hide('PopUp_TimePoint_Table')
 
         } );
@@ -2783,7 +2764,7 @@ function add_structures(result) {
         allow_keystrokes("ConditionName_Table") 
     }
 
-        $('#submit_ConditionName_Table_button').click( function() {
+        $('#submit_ConditionName_Table_button').off('click.corinemap').on('click.corinemap', function() {
             data_name = table_name.$('input, select').serialize();
             //table_name.clear()
             div_hide('PopUp_ConditionName_Table') //closes popup upon click of submit_TimePoint_Table_button
@@ -2819,7 +2800,7 @@ function add_structures(result) {
             return false;
         } );
         
-        $('#close_popup_conditionname').click( function() {
+        $('#close_popup_conditionname').off('click.corinemap').on('click.corinemap', function() {
             div_hide('PopUp_ConditionName_Table')
         } );
 
@@ -2954,7 +2935,7 @@ function add_structures(result) {
  
           //var submit_click=0
     }
-        $('#submit_CellNumber_Table_button').click( function() {
+        $('#submit_CellNumber_Table_button').off('click.corinemap').on('click.corinemap', function() {
             //submit_click++
             //console.log("submit_click "+submit_click)
             data_cellnum = table_cellnum.$('input, select').serialize();
@@ -2979,7 +2960,7 @@ function add_structures(result) {
 
         })  
  
-        $('#close_popup_cellnumber').click( function() {
+        $('#close_popup_cellnumber').off('click.corinemap').on('click.corinemap', function() {
             div_hide('PopUp_CellNumber_Table')
         } );
 
@@ -3216,7 +3197,7 @@ function add_structures(result) {
         
         
 
-        $('#submit_custom_data_selection').click( function() {
+        $('#submit_custom_data_selection').off('click.corinemap').on('click.corinemap', function() {
             $("#submit_custom_data_selection").hide(); //removes users ability to submit nonsense custom data selection        
 
             metabolite=$('#choose-metab').val()
@@ -3290,7 +3271,7 @@ function add_structures(result) {
     }
 
         //document.querySelector('#submit_custom_graph_button').addEventListener('click',submit_custom_graph_button_click,{once: true})
-        $('#submit_custom_graph_button').click(submit_custom_graph_button_click)
+        $('#submit_custom_graph_button').off('click.corinemap').on('click.corinemap', submit_custom_graph_button_click)
         function submit_custom_graph_button_click() { //this cycles through for some reason
 
             var Number_datalist=$(".CG_select-data-type-list")[0].childElementCount
@@ -3464,7 +3445,7 @@ function add_structures(result) {
             
         }
 
-        $('#close_popup_custom_graph').click( function() {
+        $('#close_popup_custom_graph').off('click.corinemap').on('click.corinemap', function() {
                 div_hide('PopUp_custom_graph')
             } );
 /////////////END Load Custom Graphs functions
@@ -3516,7 +3497,7 @@ function add_structures(result) {
         
 
     }
-        $('#submit_graph_groups_button').click(submit_graph_groups_button_click)
+        $('#submit_graph_groups_button').off('click.corinemap').on('click.corinemap', submit_graph_groups_button_click)
         
         function submit_graph_groups_button_click() {
     
@@ -3565,7 +3546,7 @@ function add_structures(result) {
             reprint_graphs() //reprint the graphs with the new selected graphs
         }                
 
-        $('#close_popup_group_display').click( function() {
+        $('#close_popup_group_display').off('click.corinemap').on('click.corinemap', function() {
             //sortable('.sortable', 'disable'); //AKSortTest                      
             div_hide('PopUp_group_display_List')
         } );      
@@ -3616,7 +3597,7 @@ function add_structures(result) {
         
 
     }
-        $('#submit_graph_time_groups_button').click(submit_graph_time_groups_button_click)
+        $('#submit_graph_time_groups_button').off('click.corinemap').on('click.corinemap', submit_graph_time_groups_button_click)
         
         function submit_graph_time_groups_button_click() {
 
@@ -3655,7 +3636,7 @@ function add_structures(result) {
             reprint_graphs() //reprint graphs with updated menu including kinetic options        
         }                
 
-        $('#close_popup_time_group_display').click( function() {
+        $('#close_popup_time_group_display').off('click.corinemap').on('click.corinemap', function() {
             //sortable('.sortable', 'disable'); //AKSortTest                      
             div_hide('PopUp_time_group_display_List')
         } );      
@@ -3672,7 +3653,7 @@ function add_structures(result) {
         make13Ccircles()
     })
 
-        $('#close_popup_13C').click( function() {
+        $('#close_popup_13C').off('click.corinemap').on('click.corinemap', function() {
             document.getElementById("PopUp_13Ccircle").style.display = "none";
         } );     
 
@@ -4044,7 +4025,7 @@ function add_structures(result) {
 
                             });                               
                                
-                                $('#close_popup_carbon_color_picker').click(function() {
+                                $('#close_popup_carbon_color_picker').off('click.corinemap').on('click.corinemap', function() {
                                     div_hide("PopUp_carbon_color_picker")
                                 } );                               
                                
@@ -4082,7 +4063,7 @@ function add_structures(result) {
                                     }            
                                         
 
-                                $('#close_popup_one_slider').click(function() {
+                                $('#close_popup_one_slider').off('click.corinemap').on('click.corinemap', function() {
                                     div_hide("PopUp_one_slider")
                                 } );         
 
@@ -4274,7 +4255,7 @@ function add_structures(result) {
     }    
     
 
-        $('#submit_isotopologue_display_Table_button').click( function() {
+        $('#submit_isotopologue_display_Table_button').off('click.corinemap').on('click.corinemap', function() {
             data_iso = table_iso.$('input, select').serialize();
             //table_time.clear()
             div_hide('PopUp_isotopologue_display_Table') //closes popup upon click of submit_TimePoint_Table_button
@@ -4284,7 +4265,7 @@ function add_structures(result) {
             return false;
         } );
 
-        $('#close_popup_isotopologue_display').click( function() {
+        $('#close_popup_isotopologue_display').off('click.corinemap').on('click.corinemap', function() {
             div_hide('PopUp_isotopologue_display_Table')
 
         } );
@@ -4410,7 +4391,7 @@ function add_structures(result) {
     }
     
 
-        $('#submit_quant_standard_display_Table_button').click( function() {
+        $('#submit_quant_standard_display_Table_button').off('click.corinemap').on('click.corinemap', function() {
             data_iso = table_quant_iso.$('input, select').serialize();
             //table_time.clear()
             div_hide('PopUp_quant_standard_display_Table') //closes popup upon click of submit_TimePoint_Table_button
@@ -4422,7 +4403,7 @@ function add_structures(result) {
             return false;
         } );
 
-        $('#close_popup_quant_standard_display').click( function() {
+        $('#close_popup_quant_standard_display').off('click.corinemap').on('click.corinemap', function() {
             div_hide('PopUp_quant_standard_display_Table')
 
         } );
@@ -4537,7 +4518,7 @@ function add_structures(result) {
                }); 
         //}
 
-            $('#submit_metabolite_display_Table_button').click( function() {
+            $('#submit_metabolite_display_Table_button').off('click.corinemap').on('click.corinemap', function() {
                 var data = table_met_disp.$('input, checkbox').serialize();
                 div_hide('PopUp_metabolite_display_Table') //closes popup upon click of submit_TimePoint_Table_button
                 console.log(data)
@@ -4545,7 +4526,7 @@ function add_structures(result) {
                 return false;
             } );
 
-            $('#close_popup_metabolite_display').click( function() {
+            $('#close_popup_metabolite_display').off('click.corinemap').on('click.corinemap', function() {
                 div_hide('PopUp_metabolite_display_Table')
 
             } );
@@ -4651,7 +4632,7 @@ function add_structures(result) {
                }); 
         //}
 
-            $('#submit_metabolite_import_settings_button').click( function() {
+            $('#submit_metabolite_import_settings_button').off('click.corinemap').on('click.corinemap', function() {
                 var data = table_import_settings.$('input, checkbox').serialize();
                 div_hide('PopUp_import_settings_Table') //closes popup upon click of submit_TimePoint_Table_button
                 console.log(data)
@@ -4659,7 +4640,7 @@ function add_structures(result) {
                 return false;
             } );
 
-            $('#close_popup_import_settings').click( function() {
+            $('#close_popup_import_settings').off('click.corinemap').on('click.corinemap', function() {
                 div_hide('PopUp_import_settings_Table')
 
             } );
@@ -5085,7 +5066,7 @@ function add_structures(result) {
                 reprint_graphs()               
             }        
 
-            $('#close_popup_slider').click( function() {
+            $('#close_popup_slider').off('click.corinemap').on('click.corinemap', function() {
                 div_hide("PopUp_slider")
             } );         
 
@@ -5458,7 +5439,7 @@ function add_structures(result) {
         }        
             
 
-          $('#close_popup_color_picker').click( function() {
+          $('#close_popup_color_picker').off('click.corinemap').on('click.corinemap', function() {
             //sortable('.sortable', 'disable'); //AKSortTest                      
             div_hide('PopUp_color_picker')
         } );
@@ -10016,7 +9997,7 @@ function add_structures(result) {
 
                         });
 
-                  $('#close_popup_data_display').click( function() {
+                  $('#close_popup_data_display').off('click.corinemap').on('click.corinemap', function() {
                         div_hide('PopUp_data_display_Table')            
                     });    
 
@@ -10129,7 +10110,7 @@ function add_structures(result) {
                                 reprint_specific_graph(metab_name,metab_frag_name,graph_type,svg)               
                             }        
 
-                            $('#close_popup_slider').click( function() {
+                            $('#close_popup_slider').off('click.corinemap').on('click.corinemap', function() {
                                 div_hide("PopUp_slider")
                             } );         
 
@@ -11781,7 +11762,7 @@ d3.json('Corinebacterium_Glutamicum.json', function(e, data) { //access data in 
 
 
 
-    $('#close_popup_upload_data').click( function() {
+    $('#close_popup_upload_data').off('click.corinemap').on('click.corinemap', function() {
         document.getElementById("PopUp_Upload_Data").style.display = "none";   
     } );
 
@@ -11807,9 +11788,5 @@ function dragended(d) {
 
 }); //closes d3.json()
 
-
-      
   </script>
-</html>      
-      
- 
+</html>
