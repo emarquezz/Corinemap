@@ -1,0 +1,11 @@
+{
+  "name": "corinemap",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A customized Escher-Trace map for Corynebacterium glutamicum.",
+  "scripts": {
+    "check": "node scripts/check-static.mjs",
+    "test": "npm run check && node scripts/test-model.mjs && node scripts/test-appearance-draft.mjs && node scripts/test-ui-keyboard-guard.mjs && node scripts/test-map-customization.mjs && node scripts/test-reaction-data.mjs && node scripts/test-reaction-datasets.mjs && node scripts/test-preloaded-data.mjs && node scripts/test-workspace.mjs"
+  }
+}
