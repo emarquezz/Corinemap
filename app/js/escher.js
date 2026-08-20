@@ -1629,32 +1629,12 @@ function init (map_data, model_data, embedded_css, selection, options) {
     canvas_size_and_loc: null,
     // applied data
     // reaction
-
     reaction_data: null,
     reaction_styles: ['color', 'size', 'text'],
     reaction_compare_style: 'log2_fold',
-
-    // Elisa
-    // Put reactions according to the standards for the figure
-
-    reaction_scale: [
-      // No change
-      { type: 'value', value: 0, color: '#5e5e5e', size: 12 },
-      // Lower expression # 6785d0
-      { type: 'value', value: 1, color: '#6785d0', size: 20 },
-      // Overexpressed #b75fb3 BA488B // D26EA9
-      { type: 'value', value: 2, color: '#D26EA9', size: 20 },
-      // Deactivated  ##E13E4E #cb5658
-      { type: 'value', value: 4, color: '#E13E4E', size: 20 },
-      // Activated 
-      { type: 'value', value: 5, color: '#64a85c', size: 20 },
-      // Changed direction
-      { type: 'value', value: 3, color: '#b88f3e', size: 20 }
-    ],
-
-    /*reaction_scale: [ { type: 'min', color: '#c8c8c8', size: 12 },
+    reaction_scale: [ { type: 'min', color: '#c8c8c8', size: 12 },
                       { type: 'median', color: '#9696ff', size: 20 },
-                      { type: 'max', color: '#ff0000', size: 25 } ],*/
+                      { type: 'max', color: '#ff0000', size: 25 } ],
     reaction_no_data_color: '#dcdcdc',
     reaction_no_data_size: 8,
     // gene
@@ -1677,7 +1657,7 @@ function init (map_data, model_data, embedded_css, selection, options) {
                  'h', 'coa', 'ump', 'h20', 'ppi' ],
     // Extensions
     tooltip_component: DefaultTooltip,
-    enable_tooltips: false,
+    enable_tooltips: true,
     // Callbacks
     first_load_callback: null,
   }, {
@@ -1715,8 +1695,8 @@ function init (map_data, model_data, embedded_css, selection, options) {
   this.settings = new Settings(set_option, get_option, conditional)
 
   // Check the scales have max and min
-  //Elisa - remove the min max value for the reaction scale
-  //var scales = [ 'reaction_scale', 'metabolite_scale' ]
+  // Corinemap reaction categories use fixed numeric values rather than a
+  // continuous min/max scale. Metabolite data keeps Escher's validation.
   var scales = [ 'metabolite_scale' ]
   scales.forEach(function (name) {
     this.settings.streams[name].onValue(function (val) {
@@ -4521,14 +4501,7 @@ function update_node (update_selection, scale, has_data_on_nodes,
   var label_mousedown_fn = this.behavior.label_mousedown
   var label_mouseover_fn = this.behavior.label_mouseover
   var label_mouseout_fn = this.behavior.label_mouseout
-  // Elisa - Special colours to specific metabolites
 
-  var highlighted_metabolites = new Set([
-    'glc__D_e',
-    'mnl_e',
-    'xyl__D_e'
-  ])  
-  // finish elisa 
   var mg = update_selection
       .select('.node-circle')
     .attr('transform', function(d) {
@@ -4545,40 +4518,14 @@ function update_node (update_selection, scale, has_data_on_nodes,
           var f = d.data
           return f === null ? no_data_style['size'] : scale.metabolite_size(f)
         } else {
-          // Elisa change node size 
-          // return d.node_is_primary ? primary_r : secondary_r
-          r = d.node_is_primary ? primary_r : secondary_r
+          return d.node_is_primary ? primary_r : secondary_r
         }
-        // Elisa modification:
-        // extracellular primary metabolites get +5 radius
-
-        if (d.node_is_primary && d.bigg_id && d.bigg_id.endsWith('_e')) {
-          r += 7.5
-        }
-        return r
       }
       // midmarkers and multimarkers
       return marker_r
     })
-
-    // Elisa add the colours
     .style('fill', function(d) {
       if (d.node_type === 'metabolite') {
-
-        // Elisa custom highlighted metabolites
-        // 1. Elisa custom metabolites override _e rule
-
-        if (highlighted_metabolites.has(d.bigg_id)) {
-          return '#359920'
-        }
-        // 2. Default special rule:
-        // all extracellular metabolites (_e)
-
-        if (d.bigg_id && d.bigg_id.endsWith('_e')) {
-          return '#8254A5'
-        }
-
-        //
         var should_color_data = (has_data_on_nodes &&
                                  metabolite_data_styles.indexOf('color') !== -1)
         if (should_color_data) {
@@ -4589,29 +4536,6 @@ function update_node (update_selection, scale, has_data_on_nodes,
         }
       }
       // midmarkers and multimarkers
-      return null
-    })
-
-
-
-    .style('stroke', function(d) {
-      if (
-        d.node_type === 'metabolite' &&
-        highlighted_metabolites.has(d.bigg_id)
-      ) {
-        return '#1e790b'
-      }
-      if (
-        d.node_type === 'metabolite' &&
-        d.bigg_id &&
-        d.bigg_id.endsWith('_e')
-      ) {
-        return '#3E0F62'
-      }
-
-
-
-      // keep default CSS stroke
       return null
     })
     .call(this.behavior.turn_off_drag)
@@ -4633,21 +4557,8 @@ function update_node (update_selection, scale, has_data_on_nodes,
       .attr('transform', function(d) {
         return 'translate(' + d.label_x + ',' + d.label_y + ')'
       })
-
-      // ELISA --- Add font-size rule here ---
-      .style('font-size', function(d) {
-        if (d.node_type === 'metabolite' && !d.node_is_primary) {
-          return '54px';   // secondary metabolites
-        }
-        return null;       // primaries & markers → keep CSS default (70px)
-      })
-      // ------------------------------
       .text(function(d) {
         var t = d[identifiers_on_map]
-        // ELISA modify node _c
-        if (t) {
-            t = String(t).trim().replace(/_[c]$/, '');
-        }
         if (has_data_on_nodes && metabolite_data_styles.indexOf('text') !== -1)
           t += ' ' + d.data_string
         return t
@@ -11701,7 +11612,7 @@ function _parse_float_or_null(x) {
 }
 
 },{"./utils":33,"d3-format":43,"underscore":56}],29:[function(require,module,exports){
-module.exports = {'version': '1.6.0-beta.4', builder_embed: 'svg.escher-svg .gene-label,svg.escher-svg .label{text-rendering:optimizelegibility;cursor:default}svg.escher-svg #mouse-node{fill:none}svg.escher-svg #canvas{stroke:#ccc;stroke-width:7px;fill:#fff}svg.escher-svg .resize-rect{fill:#000;opacity:0;stroke:none}svg.escher-svg .label{font-family:sans-serif;font-style:italic;font-weight:700;font-size:8px;fill:#000;stroke:none}svg.escher-svg .reaction-label{font-size:82px;fill:#202078;text-rendering:optimizelegibility}svg.escher-svg .node-label{font-size:70px}svg.escher-svg .gene-label{font-size:18px;fill:#202078}svg.escher-svg .text-label .label,svg.escher-svg .text-label-input{font-size:50px}svg.escher-svg .node-circle{stroke-width:2px}svg.escher-svg .midmarker-circle,svg.escher-svg .multimarker-circle{fill:#fff;fill-opacity:.2;stroke:#323232}svg.escher-svg g.selected .node-circle{stroke-width:6px;stroke:#1471c7}svg.escher-svg g.selected .label{fill:#1471c7}svg.escher-svg .metabolite-circle{stroke:#a24510;fill:#e0865b}svg.escher-svg g.selected .metabolite-circle{stroke:#050200}svg.escher-svg .segment{stroke:#334E75;stroke-width:10px;fill:none}svg.escher-svg .arrowhead{fill:#334E75}svg.escher-svg .stoichiometry-label-rect{fill:#fff;opacity:.5}svg.escher-svg .stoichiometry-label{fill:#334E75;font-size:17px}svg.escher-svg .membrane{fill:none;stroke:#fb0}svg.escher-svg .brush .extent{fill-opacity:.1;fill:#000;stroke:#fff;shape-rendering:crispEdges}svg.escher-svg #brush-container .background{fill:none}svg.escher-svg .bezier-circle{fill:#fff}svg.escher-svg .bezier-circle.b1{stroke:red}svg.escher-svg .bezier-circle.b2{stroke:#00f}svg.escher-svg .connect-line{stroke:#c8c8c8}svg.escher-svg .direction-arrow{stroke:#000;stroke-width:1px;fill:#fff;opacity:.3}svg.escher-svg .start-reaction-cursor{cursor:pointer}svg.escher-svg .start-reaction-target{stroke:#646464;fill:none;opacity:.5}svg.escher-svg .rotation-center-line{stroke:red;stroke-width:5px}svg.escher-svg .highlight{fill:#D97000;text-decoration:underline}svg.escher-svg .cursor-grab{cursor:grab;cursor:-webkit-grab}svg.escher-svg .cursor-grabbing{cursor:grabbing;cursor:-webkit-grabbing}svg.escher-svg .edit-text-cursor{cursor:text}'};
+module.exports = {'version': '1.6.0-beta.4', builder_embed: 'svg.escher-svg .gene-label,svg.escher-svg .label{text-rendering:optimizelegibility;cursor:default}svg.escher-svg #mouse-node{fill:none}svg.escher-svg #canvas{stroke:#ccc;stroke-width:7px;fill:#fff}svg.escher-svg .resize-rect{fill:#000;opacity:0;stroke:none}svg.escher-svg .label{font-family:sans-serif;font-style:italic;font-weight:700;font-size:8px;fill:#000;stroke:none}svg.escher-svg .reaction-label{font-size:30px;fill:#202078;text-rendering:optimizelegibility}svg.escher-svg .node-label{font-size:20px}svg.escher-svg .gene-label{font-size:18px;fill:#202078}svg.escher-svg .text-label .label,svg.escher-svg .text-label-input{font-size:50px}svg.escher-svg .node-circle{stroke-width:2px}svg.escher-svg .midmarker-circle,svg.escher-svg .multimarker-circle{fill:#fff;fill-opacity:.2;stroke:#323232}svg.escher-svg g.selected .node-circle{stroke-width:6px;stroke:#1471c7}svg.escher-svg g.selected .label{fill:#1471c7}svg.escher-svg .metabolite-circle{stroke:#a24510;fill:#e0865b}svg.escher-svg g.selected .metabolite-circle{stroke:#050200}svg.escher-svg .segment{stroke:#334E75;stroke-width:10px;fill:none}svg.escher-svg .arrowhead{fill:#334E75}svg.escher-svg .stoichiometry-label-rect{fill:#fff;opacity:.5}svg.escher-svg .stoichiometry-label{fill:#334E75;font-size:17px}svg.escher-svg .membrane{fill:none;stroke:#fb0}svg.escher-svg .brush .extent{fill-opacity:.1;fill:#000;stroke:#fff;shape-rendering:crispEdges}svg.escher-svg #brush-container .background{fill:none}svg.escher-svg .bezier-circle{fill:#fff}svg.escher-svg .bezier-circle.b1{stroke:red}svg.escher-svg .bezier-circle.b2{stroke:#00f}svg.escher-svg .connect-line{stroke:#c8c8c8}svg.escher-svg .direction-arrow{stroke:#000;stroke-width:1px;fill:#fff;opacity:.3}svg.escher-svg .start-reaction-cursor{cursor:pointer}svg.escher-svg .start-reaction-target{stroke:#646464;fill:none;opacity:.5}svg.escher-svg .rotation-center-line{stroke:red;stroke-width:5px}svg.escher-svg .highlight{fill:#D97000;text-decoration:underline}svg.escher-svg .cursor-grab{cursor:grab;cursor:-webkit-grab}svg.escher-svg .cursor-grabbing{cursor:grabbing;cursor:-webkit-grabbing}svg.escher-svg .edit-text-cursor{cursor:text}'};
 },{}],30:[function(require,module,exports){
 /**
 * @license
@@ -27248,14 +27159,6 @@ function isElement(o) {
 function isText(o) {
   return o && (typeof o === 'undefined' ? 'undefined' : _typeof(o)) === 'object' && o !== null && o.nodeType === 3 && typeof o.nodeName === 'string';
 }
-/**
- * Remove _c
- */
-
-function format_label(label) {
-    if (!label) return label;
-    return label.replace(/_c$/, '');
-}
 
 /**
  * Create a new TinierDOM element.
@@ -29498,4 +29401,3 @@ module.exports = new vkbeautify();
 
 },{}]},{},[30])(30)
 });
-//# sourceMappingURL=escher.js.map
