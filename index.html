@@ -1,63 +1,216 @@
-<html lang="en" class="wf-tulpenone-n4-active wf-active">
-
-<head>
-
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.edgefonts.net/c/2c88c6/1w;tulpen-one,2,Wd4:W:n4/l" media="all">
-    <!--<script src="//use.edgefonts.net/tulpen-one.js"></script>-->
+<!doctype html>
+<html lang="en">
+  <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-    <title style="text-align: center">Escher-Trace</title>
-    <link href="escher-trace.css" rel="stylesheet">
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#20344a">
+    <title>Corinemap — Corynebacterium glutamicum metabolic map</title>
+    <link rel="icon" href="data:,">
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #20344a;
+        background: #edf3f8;
+      }
 
-<body><noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root">
-        <div id="homepage-container">
-            <div id="homepage-body">
-                <div id="homepage-title-box" class="row">
-                    <div id="github-link-box"><a href="https://github.com/escher-trace/escher-trace.github.io"><img src="homepage-media/Github-logo.svg" alt="GitHub" id="github-link">GitHub</a><a href="https://escher-trace.readthedocs.io/en/latest/">Docs</a></div><img id="homepage-logo" style="height: 259px; width: 250px;" alt="" src="homepage-media/Escher-Trace%20Logo.png">
-                    <div style="width: 100%;">
-                        <div id="homepage-title">ESCHER-TRACE</div>
-                    </div>
-                </div>
-                <div id="homepage-description">An interactive pathway visualization tool for on-the-fly stable isotope tracing analysis.</div>                  
-                <div id="homepage-launch-box"><a href="app/corinemap.html" id="homepage-launch-box-centered">
-                    <img id="homepage-launch-screen" alt="" src="homepage-media/Escher-Trace Interface pic.PNG">
-                        <div id="homepage-launch-button">Launch Corinemap</div>
-                    </a></div>
-                <hr>
-                <div>
-                    <h2>Escher-Trace Instructions</h2>
-                    <p>Try it out by launching Escher-Trace and clicking "Import Tracing Data" in the bottom right corner of the screen. Download <a href="Escher-Trace%20Example%20Workspace.json" download>this Escher-Trace Workspace file</a> and upload it to Escher-Trace as a JSON file (under Reupload Workspace). Interact with the data by using Escher-Trace menu located on the right hand side of the screen. More information on how to upload your own data and interact with it using Escher-Trace can be found in the <a href="https://escher-trace.readthedocs.io/en/latest/" target=”_blank”>Documentation</a></p>
-                    
-                   <!-- <p>Try it out by mousing over a reaction label and using the buttons within the tooltip! The upper and lower bounds can also be changed by adjusting the slider bars or by entering values in the Upper Bound and Lower Bound fields. Please note that while you can set any number of reactions to be maximized or minimized, at least one needs to be set.</p><br>
-                    <p>The <button class="demoButton">Knockout</button> button sets both the upper and lower bounds of the reaction to zero, simulating a knockout of the targeted gene.</p>
-                    <p>The <button class="demoButton">Reset</button> button resets the upper and lower bounds of the reaction to their original values in the loaded model.</p>
-                    <p>The <button class="demoButton">Maximize</button> button tells the problem solver to set the objective function to maximize the amount of flux through the target reaction.</p>
-                    <p>The opposite of the maximize button, the <button class="demoButton">Minimize</button> button sets the objective function to minimize the amount of flux through the target reaction.</p>
-                    <p>Toggle the <button class="demoButton">Compound Objectives</button>button on to allow for multiple maximize and minimize objectives to be set.</p>-->
-                    <h2>About Escher</h2>
-                    <p>The rest of the functionality in Escher-Trace is provided by the Escher pathway visualization software. To learn more about Escher, visit the <a href="https://escher.github.io/" target=”_blank”>Escher homepage</a> or check out the <a href="https://escher.readthedocs.io" target=”_blank”>Documentation</a>.</p>
-                    <h2>How do I cite Escher-Trace?</h2>
-                    <p>Avi Kumar, Jack Mitchener, Zachary A. King, and Christian M. Metallo. Escher-Trace: a web application for pathway-based visualization of stable isotope tracing data. <i>BMC Bioinformatics</i> <b>21,</b> 297 (2020). <a href="https://doi.org/10.1186/s12859-020-03632-0" target=”_blank”>https://doi.org/10.1186/s12859-020-03632-0</a></p>
-                    <h2>Questions?</h2>
-                    <p>Please contact us at <a href = "mailto:eschertrace@gmail.com">eschertrace@gmail.com</a> if you have any questions about Escher-Trace.</p>                    
-                    <!--<p>You can support Escher-Trace by citing our preprint. This really, really helps!</p>
-                    <p>EG Rowe, BO Palsson, ZA King (2018) Escher-Trace: a web application for interactive flux balance analysis. <i>BMC Sys Bio</i> 12:84 <a href="https://doi.org/10.1186/s12918-018-0607-5">https://doi.org/10.1186/s12918-018-0607-5</a></p>
-                    <h2>How can I report bugs and give feedback?</h2>
-                    <p>A bug tracker and development roadmap can be found at the following site. Please feel free to contribute! <a href="https://github.com/SBRG/escher-fba-feedback">https://github.com/SBRG/escher-fba-feedback</a></p>-->
-                </div>
-                <hr>
-                <!--<h2>Funding</h2>
-                <p>Coming soon.</p>-->
-                <!--<p id="funding">Funding provided by the Novo Nordisk Foundation through the Center for Biosustainability at the Technical University of Denmark (NNF10CC1016517).</p>
-                <div id="logos"><a href="http://systemsbiology.ucsd.edu/"><img id="sbrg-logo" alt="" src="/escher-fba/static/media/sbrg-logo.5569a4c8.png"></a><a href="http://novonordiskfonden.dk/en"><img id="nnf-logo" alt="" src="/escher-fba/static/media/nnf-logo.9f5b21a9.jpg"></a></div>-->
-                <div><span style="float: left;">© 2019 The Regents of the University of California</span><span style="float: right;">Version 1.0.0</span></div>
-            </div>
+      * { box-sizing: border-box; }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        background:
+          radial-gradient(circle at 12% 12%, rgba(103, 133, 208, 0.19), transparent 30rem),
+          radial-gradient(circle at 88% 78%, rgba(53, 153, 32, 0.13), transparent 28rem),
+          #edf3f8;
+      }
+
+      a { color: inherit; }
+
+      .site-header {
+        display: flex;
+        width: min(1120px, calc(100% - 40px));
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 auto;
+        padding: 24px 0;
+      }
+
+      .brand {
+        color: #20344a;
+        font-size: 20px;
+        font-weight: 850;
+        letter-spacing: -0.02em;
+        text-decoration: none;
+      }
+
+      .github-link {
+        color: #47627f;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .github-link:hover { color: #244f78; }
+
+      main {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: clamp(42px, 9vh, 96px) 0 68px;
+      }
+
+      .hero {
+        max-width: 800px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        padding: 7px 11px;
+        border: 1px solid #b8c8d8;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.7);
+        color: #315f8c;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin: 22px 0 18px;
+        font-size: clamp(44px, 8vw, 82px);
+        line-height: 0.98;
+        letter-spacing: -0.055em;
+      }
+
+      .lead {
+        max-width: 720px;
+        margin: 0;
+        color: #526377;
+        font-size: clamp(18px, 2.4vw, 24px);
+        line-height: 1.5;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 32px;
+      }
+
+      .button {
+        display: inline-flex;
+        min-height: 48px;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 20px;
+        border: 1px solid #8fa2b7;
+        border-radius: 9px;
+        background: rgba(255, 255, 255, 0.78);
+        color: #29445f;
+        font-size: 15px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .button.primary {
+        border-color: #315f8c;
+        background: #315f8c;
+        color: #fff;
+        box-shadow: 0 10px 24px rgba(49, 95, 140, 0.25);
+      }
+
+      .button:hover { transform: translateY(-1px); }
+      .button.primary:hover { background: #244f78; }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: clamp(54px, 10vh, 104px);
+      }
+
+      .feature {
+        min-height: 150px;
+        padding: 20px;
+        border: 1px solid rgba(143, 162, 183, 0.58);
+        border-radius: 13px;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 8px 26px rgba(32, 52, 74, 0.07);
+      }
+
+      .feature h2 {
+        margin: 0 0 9px;
+        font-size: 16px;
+      }
+
+      .feature p {
+        margin: 0;
+        color: #647286;
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      footer {
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 22px 0 30px;
+        border-top: 1px solid rgba(143, 162, 183, 0.5);
+        color: #718093;
+        font-size: 12px;
+      }
+
+      @media (max-width: 820px) {
+        .features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+
+      @media (max-width: 520px) {
+        .site-header,
+        main,
+        footer { width: min(100% - 28px, 1120px); }
+        .features { grid-template-columns: 1fr; }
+        .button { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./">Corinemap</a>
+      <a class="github-link" href="https://github.com/emarquezz/Corinemap">View on GitHub</a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <span class="eyebrow">Interactive metabolic map</span>
+        <h1 id="page-title">Explore and edit <em>C. glutamicum</em> metabolism.</h1>
+        <p class="lead">Corinemap combines an editable Escher pathway with named flux datasets, categorical reaction styling, customizable metabolite appearance, and publication-ready export.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="app/corinemap.html">Open Corinemap</a>
+          <a class="button" href="https://github.com/emarquezz/Corinemap#readme">Read the guide</a>
         </div>
-    </div>
-</body>
+      </section>
 
+      <section class="features" aria-label="Corinemap features">
+        <article class="feature">
+          <h2>Edit the pathway</h2>
+          <p>Search, move, add, and edit reactions using the bundled iCW773 model.</p>
+        </article>
+        <article class="feature">
+          <h2>Switch flux datasets</h2>
+          <p>Move between Mannitol, Xylose, and imported CSV datasets without reloading.</p>
+        </article>
+        <article class="feature">
+          <h2>Style live</h2>
+          <p>Preview reaction, metabolite, font, size, and color adjustments directly on the map.</p>
+        </article>
+        <article class="feature">
+          <h2>Save and publish</h2>
+          <p>Reopen complete workspaces or export SVG and PNG figures for presentations and papers.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer>Corinemap runs entirely in your browser and is built on the Escher pathway editor.</footer>
+  </body>
 </html>

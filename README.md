@@ -4,15 +4,13 @@ Corinemap is a focused pathway editor and figure-making application for a *Coryn
 
 ## Run locally
 
-The application is static and does not need a build step. Serve the repository root with any local HTTP server, then open `/app/`:
+The application is static and does not need a build step. Serve the repository root with any local HTTP server:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Visit `http://localhost:8000/app/corinemap.html`. Opening the page directly with a `file://` URL will prevent the browser from loading the map JSON.
-
-The original Escher-Trace analysis interface remains temporarily available at `/app/index.html` for comparison while the focused interface is validated. New Corinemap styling and category features are implemented on the focused page.
+Visit `http://localhost:8000/` for the Corinemap landing page, or open `http://localhost:8000/app/corinemap.html` directly. Opening the application with a `file://` URL will prevent the browser from loading the map JSON.
 
 Corinemap loads the bundled `iCW773` COBRA model together with the default map. This enables Escher's reaction-building and model-aware editing tools immediately; no separate model upload is required.
 
@@ -29,7 +27,7 @@ GND,1
 FUM,Increased expression
 ```
 
-See [`docs/example_files/Corinemap_Reaction_Categories.csv`](docs/example_files/Corinemap_Reaction_Categories.csv) for an example.
+See [`examples/Corinemap_Reaction_Categories.csv`](examples/Corinemap_Reaction_Categories.csv) for an example.
 
 Mannitol and Xylose are bundled as the initial tabs and load automatically from `app/data/`. To change the datasets that open with the page, add the CSV files to that directory and edit `preloadedReactionDatasets` in `app/js/corinemap/config.js`.
 
@@ -55,16 +53,21 @@ The checks validate local asset references, JavaScript syntax, event-handler con
 
 ## Repository layout
 
-- `app/corinemap.html`: focused Corinemap interface.
+- `index.html`: lightweight Corinemap landing page.
+- `app/corinemap.html`: Corinemap application.
 - `app/js/corinemap/`: Corinemap configuration, styling, data import, workspace, and UI modules.
 - `app/data/`: CSV datasets loaded automatically when Corinemap starts.
 - `app/models/cglutamicum_mtl_escher.json`: default `iCW773` COBRA model used for reaction editing.
-- `app/index.html`: legacy Escher-Trace interface retained during migration.
 - `app/Corinebacterium_Glutamicum.json`: active Escher map.
 - `app/js/escher.js`: customized Escher 1.6 vendor bundle.
-- `app/css/`: application and vendor styles.
-- `docs/`: inherited Escher-Trace documentation.
+- `app/css/`: Corinemap and required Escher/Bootstrap styles.
+- `examples/`: small files demonstrating accepted import formats.
+- `scripts/`: dependency-free repository checks and regression tests.
 
-## Refactoring direction
+## Architecture
 
-The focused interface does not load Escher-Trace's isotope correction, normalization, time-course, DataTables, Math.js, or tracing-chart code. Corinemap-specific behavior belongs in `app/js/corinemap/`; avoid adding new behavior to the Escher vendor bundle. The bundle retains one documented compatibility change so Escher accepts Corinemap's discrete value-only reaction scale instead of requiring continuous `min` and `max` entries.
+Corinemap-specific behavior belongs in `app/js/corinemap/`; avoid adding new behavior to the Escher vendor bundle. The bundle retains one documented compatibility change so Escher accepts Corinemap's discrete value-only reaction scale instead of requiring continuous `min` and `max` entries.
+
+## Acknowledgements
+
+Corinemap uses the [Escher](https://escher.github.io/) pathway editor and began as a focused adaptation of [Escher-Trace](https://github.com/escher-trace/escher-trace.github.io). The former isotope-tracing interface, analysis libraries, examples, and documentation are not included because Corinemap does not use those features. See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for attribution.
