@@ -14,7 +14,7 @@ function check(condition, message) {
 let checkedAssetCount = 0;
 let checkedInlineScriptCount = 0;
 
-for (const htmlName of ['index.html', 'corinemap.html']) {
+for (const htmlName of ['corinemap.html']) {
   const html = readFileSync(resolve(appRoot, htmlName), 'utf8');
   const assetReferences = [
     ...html.matchAll(/<(?:script|link)\b[^>]*\b(?:src|href)=["']([^"']+)["'][^>]*>/gi),
@@ -121,6 +121,39 @@ for (const htmlName of ['index.html', 'corinemap.html']) {
   }
 }
 
+const landingHtml = readFileSync(resolve(repositoryRoot, 'index.html'), 'utf8');
+const landingReferences = [
+  ...landingHtml.matchAll(/<(?:a|link|script|img)\b[^>]*\b(?:href|src)=["']([^"']+)["'][^>]*>/gi),
+].map((match) => match[1]);
+checkedAssetCount += landingReferences.length;
+for (const reference of landingReferences) {
+  if (/^(?:(?:https?:)?\/\/|data:|#|mailto:)/i.test(reference)) continue;
+  const pathWithoutQuery = reference.split(/[?#]/, 1)[0];
+  check(
+    existsSync(resolve(repositoryRoot, pathWithoutQuery)),
+    `root index.html: missing local target ${reference}`,
+  );
+}
+check(/<title>[^<]*Corinemap/i.test(landingHtml), 'root index.html must use Corinemap branding.');
+check(
+  /href=["']app\/corinemap\.html["']/.test(landingHtml),
+  'root index.html must link directly to the Corinemap application.',
+);
+
+for (const legacyPath of [
+  'Escher-Trace Example Workspace.json',
+  'app/index.html',
+  'docs',
+  'escher-trace.css',
+  'homepage-media',
+  'mkdocs.yml',
+]) {
+  check(
+    !existsSync(resolve(repositoryRoot, legacyPath)),
+    `legacy Escher-Trace path should be removed: ${legacyPath}`,
+  );
+}
+
 for (const fileName of readdirSync(appRoot).filter((name) => name.endsWith('.json'))) {
   const mapPath = resolve(appRoot, fileName);
   try {
@@ -190,6 +223,10 @@ const { APP_CONFIG } = await import(pathToFileURL(configPath));
 check(
   typeof APP_CONFIG.modelUrl === 'string' && existsSync(resolve(appRoot, APP_CONFIG.modelUrl)),
   `config.js: missing default model ${APP_CONFIG.modelUrl}.`,
+);
+check(
+  APP_CONFIG.appearance?.reactionLabelSize === 82,
+  'config.js: the default reaction-label font size must be 82.',
 );
 check(
   Array.isArray(APP_CONFIG.preloadedReactionDatasets),

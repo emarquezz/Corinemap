@@ -35,7 +35,7 @@ const workspace = createWorkspace(builder, state);
 assert.equal(workspace.format, WORKSPACE_FORMAT);
 assert.equal(workspace.version, WORKSPACE_VERSION);
 assert.equal(workspace.activeDatasetId, 'xylose');
-assert.equal(workspace.appearance.reactionLabelSize, 30);
+assert.equal(workspace.appearance.reactionLabelSize, 82);
 assert.notEqual(workspace.appearance.reactionLabelSize, state.appearancePreview.reactionLabelSize);
 assert.deepEqual(workspace.datasets[1].reactionData, { PGK: 2 });
 assert.equal(validateWorkspace(workspace).datasets.length, 2);
